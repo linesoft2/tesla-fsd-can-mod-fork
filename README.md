@@ -4,7 +4,7 @@
 
 This firmware runs on an **Adafruit CAN Bus FeatherWing** (MCP25625/MCP2515-based) and intercepts specific CAN bus messages on a Tesla vehicle to enable and configure **Full Self-Driving (FSD)** functionality.
 
-It listens for autopilot-related CAN frames, detects when FSD is selected in the vehicle UI, and modifies the relevant bits before re-transmitting the frames onto the bus. It also reads the follow-distance stalk setting and maps it to a speed profile.
+It listens for autopilot-related CAN frames on the vehicle's CAN bus and checks whether **"Traffic Light and Stop Sign Control"** is enabled in the vehicle's Autopilot settings. When this setting is turned on, the chip treats it as the trigger to enable **Full Self-Driving** by modifying the relevant bits in the CAN frame and re-transmitting it onto the bus. It also reads the follow-distance stalk setting and maps it to a speed profile.
 
 ### Supported Hardware Variants
 
@@ -18,7 +18,7 @@ The firmware supports three Tesla hardware generations, selected at compile time
 
 ### Key Behaviour
 
-- **FSD enable bit** is set when FSD is selected in the UI.
+- **FSD enable bit** is set when **"Traffic Light and Stop Sign Control"** is enabled in the vehicle's Autopilot settings.
 - **Speed profile** is derived from the scroll-wheel offset or follow-distance setting.
 - **Nag suppression** — clears the hands-on-wheel nag bit.
 - Debug output is printed over Serial at 115200 baud when `enablePrint` is `true`.
@@ -70,7 +70,16 @@ Near the top of `CanFeather.ino`, change the `HW` define to match your vehicle:
 
 ### 6. Wiring
 
-Connect the Feather's CAN-H and CAN-L lines to the appropriate CAN bus on the vehicle. Ensure proper termination (120 Ω) if required by your setup.
+The recommended connection point is the [**X179 connector**](https://service.tesla.com/docs/Model3/ElectricalReference/prog-233/connector/x179/):
+
+| Pin | Signal |
+|-----|--------|
+| 13  | CAN-H  |
+| 14  | CAN-L  |
+
+Connect the Feather's CAN-H and CAN-L lines to pins 13 and 14 on the X179 connector.
+
+**Important:** Cut the onboard 120 Ω termination resistor on the Feather CAN board. The vehicle's CAN bus already has its own termination, and adding a second resistor will cause communication errors.
 
 ## Serial Monitor
 
