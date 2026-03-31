@@ -1,3 +1,7 @@
+# ⚠️重要警告
+
+**自2026.3.31晚9:00左右开始，中国国内使用本项目破解方案的车辆将会被远程下发配置从芯片底层禁用FSD相关功能，后续是否还能恢复不得而知，请谨慎使用本项目。**
+
 # 说明
 
 本项目为[https://gitlab.com/Starmixcraft/tesla-fsd-can-mod](https://gitlab.com/Starmixcraft/tesla-fsd-can-mod)的fork，进行了一些修改以适配自己购买的开发板和国内车机。
